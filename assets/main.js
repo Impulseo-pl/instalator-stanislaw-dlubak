@@ -1,4 +1,4 @@
-// Instalator Stanisław Dłubak - interakcje strony (projekt v2, 01.10.2026).
+// Instalator Stanisław Dłubak - interakcje strony (projekt „szyld”, 01.10.2026).
 // Każdy blok osobno w try/catch: awaria jednego efektu nie zatrzymuje reszty strony.
 
 // --- menu na telefonie ---
@@ -80,7 +80,7 @@
   }
 })();
 
-// --- karta „sklep teraz” (godziny z wizytówki Google: pn-pt 9-17, sob 9-14) ---
+// --- podpis „sklep teraz” pod zdjęciem wejścia (godziny z wizytówki Google: pn-pt 9-17, sob 9-14) ---
 (function () {
   try {
     var karty = document.querySelectorAll('[data-sklep-stan]');
@@ -112,37 +112,6 @@
     });
     // podświetlenie dzisiejszego dnia w tabeli godzin
     [].forEach.call(document.querySelectorAll('[data-dzien="' + d + '"]'), function (el) { el.classList.add('dzis'); });
-  } catch (e) {}
-})();
-
-// --- oś procesu: licznik kroków + pasek ---
-(function () {
-  try {
-    var sek = document.querySelector('.proces-os');
-    if (!sek) return;
-    var kroki = [].slice.call(sek.querySelectorAll('.proces-line li'));
-    var cur = sek.querySelector('.pc-cur');
-    var bar = sek.querySelector('.proc-bar i');
-    var now = sek.querySelector('.proc-now');
-    if (!kroki.length) return;
-    var tick = false;
-    function upd() {
-      var srodek = window.innerHeight * 0.5, akt = 0;
-      kroki.forEach(function (li, i) {
-        var r = li.getBoundingClientRect();
-        if (r.top < srodek) akt = i;
-        if (r.top < window.innerHeight * 0.85) li.classList.add('os-seen');
-      });
-      kroki.forEach(function (li, i) { li.classList.toggle('is-on', i === akt); });
-      if (cur) cur.textContent = (akt < 9 ? '0' : '') + (akt + 1);
-      if (bar) bar.style.width = ((akt + 1) / kroki.length * 100) + '%';
-      if (now) { var h = kroki[akt].querySelector('h3'); if (h) now.textContent = h.textContent; }
-      tick = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!tick) { tick = true; requestAnimationFrame(upd); }
-    }, { passive: true });
-    upd();
   } catch (e) {}
 })();
 
@@ -220,7 +189,7 @@
   try {
     var pasek = document.querySelector('.sticky-call');
     if (!pasek || !('IntersectionObserver' in window)) return;
-    var cele = document.querySelectorAll('.hero-split, footer, .cta');
+    var cele = document.querySelectorAll('.hero-szyld, .ph-sklep, footer, .cta');
     if (!cele.length) return;
     var widoczne = [];
     var io = new IntersectionObserver(function (wpisy) {
